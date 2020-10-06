@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-source-firestore",
+  "name": "gatsby-source-firebase-collections",
   "description": "Gatsby source plugin for building websites using the Firestore as a data source",
-  "version": "1.0.4",
-  "author": "Yao Bin Then <alvinthen890703@gmail.com>",
-  "repository": "https://github.com/taessina/gatsby-source-firestore",
+  "version": "1.3.6",
+  "author": "Leonardo Quevedo <lpachecoquevedo@gmail.com>",
+  "repository": "https://github.com/taessina/gatsby-source-firebase-collections",
   "keywords": [
     "firebase",
     "firestore",
