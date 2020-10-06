@@ -1,6 +1,6 @@
-# gatsby-source-firestore
+# gatsby-source-firebase-collections
 
-[![npm version](https://badge.fury.io/js/gatsby-source-firestore.svg)](https://badge.fury.io/js/gatsby-source-firestore)
+[![npm version](https://badge.fury.io/js/gatsby-source-firebase-collections.svg)](https://badge.fury.io/js/gatsby-source-firebase-collections)
 
 Gatsby source plugin for building websites using
 [Firebase Firestore](https://firebase.google.com/products/firestore)
@@ -14,58 +14,57 @@ as a data source
 2. Rename and put the downloaded `.json` crendtial file somewhere in the
    GatsbyJS project (e.g. `./credentials.json`)
 
-3. Add `gatsby-source-firestore` as a dependency by running using `npm` or `yarn`:
+3. Add `gatsby-source-firebase-collections` as a dependency by running using `npm` or `yarn`:
 
    ```sh
-   npm i gatsby-source-firestore
+   npm i gatsby-source-firebase-collections
    # or
-   yarn add gatsby-source-firestore
+   yarn add gatsby-source-firebase-collections
    ```
 
 4. Configure settings at `gatsby-config.js`, for example:
 
    ```js
    module.exports = {
-      plugins: [
-        {
-          resolve: `gatsby-source-firestore`,
-          options: {
-            // credential or appConfig
-            credential: require(`./credentials.json`),
-            appConfig: {
-              apiKey: "api-key",
-              authDomain: "project-id.firebaseapp.com",
-              databaseURL: "https://project-id.firebaseio.com",
-              projectId: "project-id",
-              storageBucket: "project-id.appspot.com",
-              messagingSenderId: "sender-id",
-              appID: "app-id",
-
-            },
-            types: [
-              {
-                type: `Book`,
-                collection: `books`,
-                map: doc => ({
-                  title: doc.title,
-                  isbn: doc.isbn,
-                  author___NODE: doc.author.id,
-                }),
-              },
-              {
-                type: `Author`,
-                collection: `authors`,
-                map: doc => ({
-                  name: doc.name,
-                  country: doc.country,
-                  books___NODE: doc.books.map(book => book.id),
-                }),
-              },
-            ],
-          },
-        },
-      ],
-    }
+     plugins: [
+       {
+         resolve: `gatsby-source-firebase-collections`,
+         options: {
+           // credential or appConfig
+           credential: require(`./credentials.json`),
+           appConfig: {
+             apiKey: 'api-key',
+             authDomain: 'project-id.firebaseapp.com',
+             databaseURL: 'https://project-id.firebaseio.com',
+             projectId: 'project-id',
+             storageBucket: 'project-id.appspot.com',
+             messagingSenderId: 'sender-id',
+             appID: 'app-id',
+           },
+           types: [
+             {
+               type: `Book`,
+               collection: `books`,
+               map: (doc) => ({
+                 title: doc.title,
+                 isbn: doc.isbn,
+                 author___NODE: doc.author.id,
+               }),
+             },
+             {
+               type: `Author`,
+               collection: `authors`,
+               map: (doc) => ({
+                 name: doc.name,
+                 country: doc.country,
+                 books___NODE: doc.books.map((book) => book.id),
+               }),
+             },
+           ],
+         },
+       },
+     ],
+   };
    ```
 
    Note that you will need to have `books` and `authors` in Firestore matching
@@ -75,21 +74,21 @@ as a data source
 
 5. Test GraphQL query:
 
-    ```graphql
-    {
-      allBooks {
-        edges {
-          node {
-            title
-            isbn
-            author {
-              name
-            }
-          }
-        }
-      }
-    }
-    ```
+   ```graphql
+   {
+     allBooks {
+       edges {
+         node {
+           title
+           isbn
+           author {
+             name
+           }
+         }
+       }
+     }
+   }
+   ```
 
 ## Configurations
 
