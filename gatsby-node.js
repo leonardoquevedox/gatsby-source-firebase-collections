@@ -43,15 +43,21 @@ exports.sourceNodes = async (
         for (let doc of snapshot.docs) {
           const contentDigest = getDigest(doc.id);
           createNode(
-            Object.assign({}, map(doc.data()), {
-              id: doc.id,
-              parent: null,
-              children: [],
-              internal: {
-                type,
-                contentDigest,
+            Object.assign(
+              {
+                values: {},
               },
-            })
+              map(doc.data()),
+              {
+                id: doc.id,
+                parent: null,
+                children: [],
+                internal: {
+                  type,
+                  contentDigest,
+                },
+              }
+            )
           );
         }
       }
