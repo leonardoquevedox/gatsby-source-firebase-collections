@@ -33,6 +33,7 @@ exports.sourceNodes = async (
           id: '0',
           parent: null,
           children: [],
+          values: {},
           internal: {
             type,
             contentDigest: getDigest(`test-${collection}`),
