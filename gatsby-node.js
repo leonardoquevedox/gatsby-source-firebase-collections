@@ -37,38 +37,41 @@ exports.sourceNodes = async (
       if (entry) {
         const { collection = '', type = '', map = node => node } = entry;
         const snapshot = await db.collection(collection).get();
+        const { docs = [] } = snapshot;
 
-        createNode(
-          Object.assign({
-            id: '0',
-            parent: null,
-            children: [],
-            values: {},
-            internal: {
-              type,
-              contentDigest: getDigest(`test-${collection}-${Date.now()}`),
-            },
-          })
-        );
-
-        for (let doc of snapshot.docs) {
-          const contentDigest = getDigest(doc.id);
-          createNode(
-            Object.assign(
-              {
-                values: {},
-              },
-              map(doc.data()),
-              {
-                id: doc.id,
-                parent: null,
-                children: [],
-                internal: {
-                  type,
-                  contentDigest,
+        if (docs.length > 0) {
+          for (let doc of snapshot.docs) {
+            const contentDigest = getDigest(doc.id);
+            createNode(
+              Object.assign(
+                {
+                  values: {},
                 },
-              }
-            )
+                map(doc.data()),
+                {
+                  id: doc.id,
+                  parent: null,
+                  children: [],
+                  internal: {
+                    type,
+                    contentDigest,
+                  },
+                }
+              )
+            );
+          }
+        } else {
+          createNode(
+            Object.assign({
+              id: '0',
+              parent: null,
+              children: [],
+              values: {},
+              internal: {
+                type,
+                contentDigest: getDigest(`test-${collection}-${Date.now()}`),
+              },
+            })
           );
         }
       }
