@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "firebase": "^6.3.0",
-    "gatsby-cli": "^2.4.6"
+    "graphql-defaults": "^0.5.2"
   },
   "devDependencies": {
     "eslint": "6.8.0",

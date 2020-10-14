@@ -1,6 +1,11 @@
 const firebase = require('firebase');
 const crypto = require('crypto');
 
+const graphqlDefaults = require('graphql-defaults');
+
+const genGraphQLDefaults = graphqlDefaults.default;
+const { genTypesDefinitionsMaps } = graphqlDefaults;
+
 const getDigest = id =>
   crypto
     .createHash('md5')
@@ -26,19 +31,31 @@ exports.sourceNodes = async (
     for (let i = 0; i < types.length; i++) {
       const entry = types[i];
       if (entry) {
-        const { collection = '', type = '', map = node => node } = entry;
+        const {
+          collection = '',
+          type = '',
+          map = node => node,
+          definition,
+        } = entry;
         const snapshot = await db.collection(collection).get();
+        let defaultValues = {};
 
-        createNode({
-          id: '0',
-          parent: null,
-          children: [],
-          values: {},
-          internal: {
-            type,
-            contentDigest: getDigest(`test-${collection}`),
-          },
-        });
+        if (definition) {
+          defaultValues = genTypesDefinitionsMaps(definition);
+        }
+
+        createNode(
+          Object.assign(defaultValues, {
+            id: '0',
+            parent: null,
+            children: [],
+            values: {},
+            internal: {
+              type,
+              contentDigest: getDigest(`test-${collection}`),
+            },
+          })
+        );
 
         for (let doc of snapshot.docs) {
           const contentDigest = getDigest(doc.id);
