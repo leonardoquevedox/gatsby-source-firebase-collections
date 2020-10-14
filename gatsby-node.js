@@ -1,16 +1,20 @@
 const firebase = require('firebase');
 const crypto = require('crypto');
 
-const graphqlDefaults = require('graphql-defaults');
-
-const genGraphQLDefaults = graphqlDefaults.default;
-const { genTypesDefinitionsMaps } = graphqlDefaults;
-
 const getDigest = id =>
   crypto
     .createHash('md5')
     .update(id)
     .digest('hex');
+
+exports.createSchemaCustomization = ({ actions }, { types = [] }) => {
+  const { createTypes } = actions;
+  for (let i = 0; i < types.length; i++) {
+    const type = types[i];
+    const { definition } = type;
+    if (definition) createTypes(definition);
+  }
+};
 
 exports.sourceNodes = async (
   { boundActionCreators },
@@ -31,28 +35,18 @@ exports.sourceNodes = async (
     for (let i = 0; i < types.length; i++) {
       const entry = types[i];
       if (entry) {
-        const {
-          collection = '',
-          type = '',
-          map = node => node,
-          definition,
-        } = entry;
+        const { collection = '', type = '', map = node => node } = entry;
         const snapshot = await db.collection(collection).get();
-        let defaultValues = {};
-
-        if (definition) {
-          defaultValues = genTypesDefinitionsMaps(definition);
-        }
 
         createNode(
-          Object.assign(defaultValues, {
+          Object.assign({
             id: '0',
             parent: null,
             children: [],
             values: {},
             internal: {
               type,
-              contentDigest: getDigest(`test-${collection}`),
+              contentDigest: getDigest(`test-${collection}-${Date.now()}`),
             },
           })
         );
