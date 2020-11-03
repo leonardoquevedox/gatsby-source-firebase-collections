@@ -8,13 +8,7 @@ as a data source
 
 ## Usage
 
-1. Generate and download a Firebase Admin SDK private key by accessing the
-   [Firebase Project Console > Settings > Service Accounts](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk)
-
-2. Rename and put the downloaded `.json` crendtial file somewhere in the
-   GatsbyJS project (e.g. `./credentials.json`)
-
-3. Add `gatsby-source-firebase-collections` as a dependency by running using `npm` or `yarn`:
+1. Add `gatsby-source-firebase-collections` as a dependency by running using `npm` or `yarn`:
 
    ```sh
    npm i gatsby-source-firebase-collections
@@ -22,7 +16,7 @@ as a data source
    yarn add gatsby-source-firebase-collections
    ```
 
-4. Configure settings at `gatsby-config.js`, for example:
+2. Configure settings at `gatsby-config.js`, for example:
 
    ```js
    module.exports = {
@@ -30,8 +24,6 @@ as a data source
        {
          resolve: `gatsby-source-firebase-collections`,
          options: {
-           // credential or appConfig
-           credential: require(`./credentials.json`),
            appConfig: {
              apiKey: 'api-key',
              authDomain: 'project-id.firebaseapp.com',
@@ -45,7 +37,7 @@ as a data source
              {
                type: `Book`,
                collection: `books`,
-               map: (doc) => ({
+               map: doc => ({
                  title: doc.title,
                  isbn: doc.isbn,
                  author___NODE: doc.author.id,
@@ -54,10 +46,10 @@ as a data source
              {
                type: `Author`,
                collection: `authors`,
-               map: (doc) => ({
+               map: doc => ({
                  name: doc.name,
                  country: doc.country,
-                 books___NODE: doc.books.map((book) => book.id),
+                 books___NODE: doc.books.map(book => book.id),
                }),
              },
            ],
@@ -68,11 +60,9 @@ as a data source
    ```
 
    Note that you will need to have `books` and `authors` in Firestore matching
-   this schema before Gatsby can query correctly, e.g `books__NODE` on `author`
-   needs to be an array with `books` as a key of reference types to `book`
-   documents.
+   this schema before Gatsby can query correctly.
 
-5. Test GraphQL query:
+3. Test GraphQL query:
 
    ```graphql
    {
@@ -94,7 +84,7 @@ as a data source
 
 | Key                | Description                                                                                                                                  |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `credential`       | Credential configurations from downloaded private key                                                                                        |
+| `appConfig`        | Firebase credentials generated on web project configuration.                                                                                 |
 | `types`            | Array of types, which require the following keys (`type`, `collection`, `map`)                                                               |
 | `types.type`       | The type of the collection, which will be used in GraphQL queries, e.g. when `type = Book`, the GraphQL types are named `book` and `allBook` |
 | `types.collection` | The name of the collections in Firestore. **Nested collections are not tested**                                                              |
