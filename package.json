@@ -1,9 +1,9 @@
 {
   "name": "gatsby-source-firebase-collections",
-  "description": "Gatsby source plugin for building websites using the Firestore as a data source",
+  "description": "Gatsby source plugin for building websites using Firestore as a data source",
   "version": "1.5.1",
-  "author": "Leonardo Quevedo <lpachecoquevedo@gmail.com>",
-  "repository": "https://github.com/leopq/gatsby-source-firebase-collections",
+  "author": "Wasu Sonthichai",
+  "repository": "https://github.com/wasurocks/gatsby-source-firebase-collections",
   "keywords": [
     "firebase",
     "firestore",
@@ -21,7 +21,7 @@
     "lint": "prettier --write gatsby-node.js"
   },
   "dependencies": {
-    "firebase": "^6.3.0",
+    "firebase": "^8.6.1",
     "gatsby-source-filesystem": "^2.3.37"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "eslint-plugin-react": "7.20.3",
     "eslint-plugin-react-hooks": "^2.3.0",
     "esm": "^3.2.25",
-    "prettier": "^1.15.3"
+    "prettier": "^2.3.1"
   },
   "license": "MIT"
 }
