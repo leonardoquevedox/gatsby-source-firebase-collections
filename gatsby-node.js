@@ -90,7 +90,7 @@ const createImageNodes = async (
 };
 
 exports.sourceNodes = async (
-  { boundActionCreators, createNodeId, store, cache },
+  { actions, createNodeId, store, cache },
   { types = [], credential, appConfig, useBucketImagesSharp },
   callback
 ) => {
@@ -103,7 +103,7 @@ exports.sourceNodes = async (
     }
 
     const db = firebase.firestore();
-    const { createNode, createParentChildLink } = boundActionCreators;
+    const { createNode, createParentChildLink } = actions;
 
     for (let i = 0; i < types.length; i++) {
       const entry = types[i];
