@@ -98,6 +98,8 @@ exports.sourceNodes = async (
       firebase.initializeApp(config);
     }
 
+    console.log('You have successfully initialized firebase with config:');
+    console.log('\n' + JSON.stringify(config));
     const db = firebase.firestore();
     const { createNode, createParentChildLink } = actions;
 
