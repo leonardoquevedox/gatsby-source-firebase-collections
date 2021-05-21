@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
 
 const getImageExtension = (value = '') =>
-  ['jpeg', 'jpg', 'png', 'webp'].filter(extension => {
+  ['jpeg', 'jpg', 'png', 'webp'].filter((extension) => {
     return value.indexOf(extension) > -1;
   })[0];
 
@@ -12,21 +12,17 @@ const isBucketImage = (value = '') =>
   value.indexOf('firebasestorage') > -1 &&
   getImageExtension(value);
 
-const getDigest = id =>
-  crypto
-    .createHash('md5')
-    .update(id)
-    .digest('hex');
+const getDigest = (id) => crypto.createHash('md5').update(id).digest('hex');
 
 const transformPropertyOnMatch = (source, isMatch, transform) => {
   if (!source || source === null)
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       resolve();
     });
 
   return Promise.all(
     Object.keys(source).map(
-      key =>
+      (key) =>
         new Promise(async (resolve, reject) => {
           try {
             // eslint-disable-next-line
@@ -99,6 +95,7 @@ exports.sourceNodes = async (
       const config = appConfig || {
         credential: firebase.credential.cert(credential),
       };
+      console.log('HI! IM STARTING THIS WITH\n' + appConfig);
       firebase.initializeApp(config);
     }
 
@@ -108,7 +105,7 @@ exports.sourceNodes = async (
     for (let i = 0; i < types.length; i++) {
       const entry = types[i];
       if (entry) {
-        const { collection = '', type = '', map = node => node } = entry;
+        const { collection = '', type = '', map = (node) => node } = entry;
         const snapshot = await db.collection(collection).get();
         const { docs = [] } = snapshot;
 
