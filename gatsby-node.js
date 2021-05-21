@@ -95,8 +95,6 @@ exports.sourceNodes = async (
       const config = appConfig || {
         credential: firebase.credential.cert(credential),
       };
-      console.log('HI! IM STARTING THIS WITH\n' + appConfig);
-      firebase.initializeApp(config);
     }
 
     const db = firebase.firestore();
