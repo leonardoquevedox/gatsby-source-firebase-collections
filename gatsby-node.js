@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
 
 const getImageExtension = (value = '') =>
-  ['jpeg', 'jpg', 'png', 'webp'].filter(extension => {
+  ['jpeg', 'jpg', 'png', 'webp'].filter((extension) => {
     return value.indexOf(extension) > -1;
   })[0];
 
@@ -12,21 +12,17 @@ const isBucketImage = (value = '') =>
   value.indexOf('firebasestorage') > -1 &&
   getImageExtension(value);
 
-const getDigest = id =>
-  crypto
-    .createHash('md5')
-    .update(id)
-    .digest('hex');
+const getDigest = (id) => crypto.createHash('md5').update(id).digest('hex');
 
 const transformPropertyOnMatch = (source, isMatch, transform) => {
   if (!source || source === null)
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       resolve();
     });
 
   return Promise.all(
     Object.keys(source).map(
-      key =>
+      (key) =>
         new Promise(async (resolve, reject) => {
           try {
             // eslint-disable-next-line
@@ -90,7 +86,7 @@ const createImageNodes = async (
 };
 
 exports.sourceNodes = async (
-  { boundActionCreators, createNodeId, store, cache },
+  { actions, createNodeId, store, cache },
   { types = [], credential, appConfig, useBucketImagesSharp },
   callback
 ) => {
@@ -102,13 +98,14 @@ exports.sourceNodes = async (
       firebase.initializeApp(config);
     }
 
+    console.log('You have successfully initialized firebase...');
     const db = firebase.firestore();
-    const { createNode, createParentChildLink } = boundActionCreators;
+    const { createNode, createParentChildLink } = actions;
 
     for (let i = 0; i < types.length; i++) {
       const entry = types[i];
       if (entry) {
-        const { collection = '', type = '', map = node => node } = entry;
+        const { collection = '', type = '', map = (node) => node } = entry;
         const snapshot = await db.collection(collection).get();
         const { docs = [] } = snapshot;
 
